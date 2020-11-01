@@ -1,5 +1,9 @@
 /**
+ * From a list of given intervals, return the same list with merged intervals
+ * if they overlap - O(log n)
  * O(log n) because of the sort operation (merge sort)
+ * @param {number[][]} intervals
+ * @returns {number[][]}
  */
 const merge = (intervals: number[][]): number[][] => {
   if (intervals.length < 2) return intervals
@@ -19,11 +23,22 @@ const merge = (intervals: number[][]): number[][] => {
   return intervals
 }
 
+/**
+ * Merge two intervals
+ * @param {number[]} a
+ * @param {number[]} b
+ * @returns {number[]}
+ */
 const mergeIntervals = (a: number[], b: number[]): number[] => [
   Math.min(a[0], b[0]),
   Math.max(a[1], b[1])
 ]
 
+/**
+ * Sort intervals by their first value - O(log n)
+ * @param {number[][]} intervals
+ * @returns {number[][]}
+ */
 const sortByStart = (intervals: number[][]): number[][] => {
   // if just one element, return it
   if (intervals.length < 2) return intervals
