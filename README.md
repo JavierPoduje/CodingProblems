@@ -1,11 +1,13 @@
 # Ejercicios de Algoritmos en Typescript
 
+Problemas tipo `coding interviews` resueltos con Typescript.
+
 ## Empezar
 
 Copiar el proyecto:
 
 ```sh
-git clone ...
+git clone git@github.com:JavierPoduje/coding_problems.git
 ```
 
 Instalar dependencias:
@@ -22,7 +24,10 @@ npm install
   - `description.md`: Markdown con la descripción del problema.
   - `solution.ts`: Typescript con la solución del problema.
   - `solution.test.js`: Javascript con los test del problema.
-4. Para correr los test:
+
+## Para correr los test
+
+Ejecutar el comando:
 
 ```sh
 npm run test
