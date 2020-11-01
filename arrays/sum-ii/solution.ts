@@ -7,23 +7,26 @@ const fourSumCount = (
   C: number[],
   D: number[]
 ): number => {
-  // O(n^2)
-  let firstHalf: number[] = []
+  // declare obj that will contain the number of times that each sum occurs
+  let sumsForAB: { [sum: number]: number } = {}
+
+  // calculate the number of times that each sum occur
   A.forEach((a: number) => {
-    B.forEach((b: number) => firstHalf.push(a + b))
+    B.forEach((b: number) => {
+      sumsForAB[a + b] = a + b in sumsForAB ? sumsForAB[a + b] + 1 : 1
+    })
   })
 
-  // O(n^2)
-  let secondHalf: number[] = []
-  C.forEach((c: number) => {
-    D.forEach((d: number) => secondHalf.push(c + d))
-  })
-
-  // O(n^2)
+  // declare variable for total of posible solutions
   let cnt = 0
-  firstHalf.forEach((a: number) => {
-    const times = [...secondHalf].filter((b: number) => b === a * -1)
-    cnt += times.length
+
+  // of each sum of c and d, check if the inverse(x * -1) value exists in sumsForAB
+  // if exists, sum the occurrences
+  C.forEach((c: number) => {
+    D.forEach((d: number) => {
+      const solution = (c + d) * -1
+      if (solution in sumsForAB) cnt += sumsForAB[solution]
+    })
   })
 
   return cnt
