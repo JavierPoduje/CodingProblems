@@ -1,5 +1,15 @@
 /**
+ * Returns the number of posible solutions such as A[i], B[j], C[k], D[l]
  *
+ * Complexity:
+ *   - space: O(n^2)
+ *   - time: O(n^2)
+ *
+ * @param {number[]} A
+ * @param {number[]} B
+ * @param {number[]} C
+ * @param {number[]} D
+ * @returns {number}
  */
 const fourSumCount = (
   A: number[],
