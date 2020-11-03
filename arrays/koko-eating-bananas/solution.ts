@@ -7,26 +7,24 @@ const minEatingSpeed = (piles: number[], H: number): number => {
   let high = Math.max(...piles)
   let bPerHour = Math.floor((low + high) / 2)
 
-  let lastEqualRate: number | null = null
+  let minBPerHour: number | null = null
 
   while (low <= high) {
     let hoursTaken = hoursTakenForEatingBananas(piles, bPerHour)
 
-    if (hoursTaken >= H) {
+    if (hoursTaken < H) {
+      high = bPerHour - 1
+    } else {
       if (hoursTaken === H) {
-        lastEqualRate = lastEqualRate
-          ? Math.min(lastEqualRate, bPerHour)
-          : bPerHour
+        minBPerHour = minBPerHour ? Math.min(minBPerHour, bPerHour) : bPerHour
       }
       low = bPerHour + 1
-    } else if (hoursTaken < H) {
-      high = bPerHour - 1
     }
 
     bPerHour = Math.floor((low + high) / 2)
   }
 
-  return lastEqualRate ? lastEqualRate : low
+  return minBPerHour ? minBPerHour : low
 }
 
 const hoursTakenForEatingBananas = (
@@ -36,11 +34,8 @@ const hoursTakenForEatingBananas = (
   let hoursTaken = 0
 
   piles.forEach((pile) => {
-    if (pile % bPerHour == 0) {
-      hoursTaken += pile / bPerHour
-    } else {
-      hoursTaken += Math.floor(pile / bPerHour) + 1
-    }
+    hoursTaken +=
+      pile % bPerHour == 0 ? pile / bPerHour : Math.floor(pile / bPerHour) + 1
   })
 
   return hoursTaken
