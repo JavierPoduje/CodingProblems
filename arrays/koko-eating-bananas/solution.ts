@@ -1,28 +1,49 @@
 /**
- * O(Kn) where K is the final answer and n is the length of the pile
+ * O(logK * n) where K is the final answer (bPerHour) and n is the length
+ * of the pile.
  */
 const minEatingSpeed = (piles: number[], H: number): number => {
-  let bPerHour = 1
-  let eatingSpeed: number
+  let low = 1
+  let high = Math.max(...piles)
+  let bPerHour = Math.floor((low + high) / 2)
 
-  do {
-    bPerHour += 1
-    eatingSpeed = 0
+  let lastEqualRate: number | null = null
 
-    for (let i = 0; i < piles.length; i++) {
-      let hoursToAdd = 0
-      let pile = piles[i]
+  while (low <= high) {
+    let hoursTaken = hoursTakenForEatingBananas(piles, bPerHour)
 
-      hoursToAdd =
-        pile % bPerHour == 0 ? pile / bPerHour : Math.floor(pile / bPerHour) + 1
-
-      eatingSpeed += hoursToAdd
+    if (hoursTaken >= H) {
+      if (hoursTaken === H) {
+        lastEqualRate = lastEqualRate
+          ? Math.min(lastEqualRate, bPerHour)
+          : bPerHour
+      }
+      low = bPerHour + 1
+    } else if (hoursTaken < H) {
+      high = bPerHour - 1
     }
-  } while (eatingSpeed > H)
 
-  return bPerHour
+    bPerHour = Math.floor((low + high) / 2)
+  }
+
+  return lastEqualRate ? lastEqualRate : low
 }
 
-console.log(minEatingSpeed([3, 6, 7, 11], 8))
+const hoursTakenForEatingBananas = (
+  piles: number[],
+  bPerHour: number
+): number => {
+  let hoursTaken = 0
+
+  piles.forEach((pile) => {
+    if (pile % bPerHour == 0) {
+      hoursTaken += pile / bPerHour
+    } else {
+      hoursTaken += Math.floor(pile / bPerHour) + 1
+    }
+  })
+
+  return hoursTaken
+}
 
 export default minEatingSpeed
