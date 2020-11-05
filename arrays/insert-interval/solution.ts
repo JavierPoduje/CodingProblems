@@ -1,30 +1,44 @@
 /*
+ */
 
-a = [  ]
-b = [  ]
+const insert = (intervals: number[][], newInterval: number[]): number[][] => {
+  if (!intervals.length) return [newInterval]
 
-a = [   ]     | [  ]
-b =   [    ]  | [    ]
+  let i = 0
+  let j = 0
+  let overlapFounded = false
+  //let inserted = false
 
-a =   [   ] | [    ]
-b = [   ]   | [  ]
+  while (i < intervals.length) {
+    while (j < intervals.length && overlaps(intervals[j], newInterval)) {
+      if (!overlapFounded) overlapFounded = true
+      j++
+    }
 
-a = [     ]
-b =   [ ] 
+    //if (!overlaps(intervals[j], newInterval) && j + 1 < intervals.length - 1) {
+    //  if (newInterval[1] < intervals[j + 1][0]) {
+    //    intervals.splice(j, 0, newInterval)
+    //    interted = true
+    //    break
+    //  }
+    //}
 
-a =   [ ]
-b = [     ] 
+    if (overlapFounded) {
+      merge(intervals, i, j - 1, newInterval)
+      break
+    } else {
+      i++
+      j++
+    }
+  }
 
-*/
+  if (!overlapFounded) {
+    return newInterval[1] < intervals[0][0]
+      ? [newInterval, ...intervals]
+      : [...intervals, newInterval]
+  }
 
-const overlaps = (a: number[], b: number[]): boolean => {
-  return (
-    (a[0] == b[0] && a[1] == b[1]) ||
-    (a[0] <= b[0] && a[1] < b[1] && a[1] > b[0]) ||
-    (a[0] <= b[0] && a[0] > b[1] && a[1] > b[0]) ||
-    (a[0] < a[0] && a[1] > b[1]) ||
-    (a[0] > b[0] && a[0] < b[1])
-  )
+  return intervals
 }
 
 const merge = (
@@ -34,52 +48,26 @@ const merge = (
   newInterval: number[]
 ): void => {
   const min = intervals
-    .slice(left, right)
+    .slice(left, right + 1)
     .map((tuple) => tuple[0])
     .reduce((a, b) => Math.min(a, b, newInterval[0]), 999999999)
   const max = intervals
-    .slice(left, right)
+    .slice(left, right + 1)
     .map((tuple) => tuple[1])
     .reduce((a, b) => Math.max(a, b, newInterval[1]), 0)
 
-  intervals.splice(left, Math.max(1, right - left), [min, max])
+  intervals.splice(left, Math.max(1, right - left + 1), [min, max])
 }
 
-const insert = (intervals: number[][], newInterval: number[]): number[][] => {
-  let i = 0
-  let j = 0
-  let overlapFounded = false
-
-  while (i < intervals.length) {
-    while (overlaps(intervals[j], newInterval)) {
-      if (!overlapFounded) {
-        overlapFounded = true
-      } else {
-        j++
-      }
-    }
-
-    if (overlapFounded) {
-      merge(intervals, i, j, newInterval)
-      break
-    } else {
-      i++
-      j++
-    }
-  }
-
-  return intervals
-}
-
-console.log(
-  insert(
-    [
-      [1, 2],
-      [3, 5],
-      [6, 7],
-      [8, 10],
-      [12, 16]
-    ],
-    [4, 8]
+const overlaps = (a: number[], b: number[]): boolean => {
+  return (
+    (a[0] <= b[0] && a[1] <= b[1] && a[1] >= b[0]) ||
+    (a[0] >= b[0] && a[1] >= b[1] && a[0] <= b[1]) ||
+    (a[0] <= b[0] && a[1] >= b[1] && a[1] >= b[0]) ||
+    (a[0] >= b[0] && a[1] <= b[1] && b[1] >= a[0])
   )
-)
+}
+
+console.log(insert([[1, 5]], [2, 3]))
+
+export default insert
