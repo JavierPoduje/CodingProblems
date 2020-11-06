@@ -1,27 +1,39 @@
 /*
+ * I think thiw should be linear cause we iterate over all the array of intervals
+ * just once
  */
-
 const insert = (intervals: number[][], newInterval: number[]): number[][] => {
   if (!intervals.length) return [newInterval]
 
   let i = 0
   let j = 0
+  let inserted = false
   let overlapFounded = false
-  //let inserted = false
 
   while (i < intervals.length) {
-    while (j < intervals.length && overlaps(intervals[j], newInterval)) {
-      if (!overlapFounded) overlapFounded = true
-      j++
+    let overlapExists =
+      j < intervals.length && overlaps(intervals[j], newInterval)
+
+    if (overlapExists) {
+      while (overlapExists) {
+        if (!overlapFounded) overlapFounded = true
+        j++
+
+        overlapExists =
+          j < intervals.length && overlaps(intervals[j], newInterval)
+      }
     }
 
-    //if (!overlaps(intervals[j], newInterval) && j + 1 < intervals.length - 1) {
-    //  if (newInterval[1] < intervals[j + 1][0]) {
-    //    intervals.splice(j, 0, newInterval)
-    //    interted = true
-    //    break
-    //  }
-    //}
+    if (!overlapExists && j + 1 < intervals.length) {
+      if (
+        newInterval[0] > intervals[j][1] &&
+        newInterval[1] < intervals[j + 1][0]
+      ) {
+        intervals.splice(j + 1, 0, newInterval)
+        inserted = true
+        break
+      }
+    }
 
     if (overlapFounded) {
       merge(intervals, i, j - 1, newInterval)
@@ -32,7 +44,7 @@ const insert = (intervals: number[][], newInterval: number[]): number[][] => {
     }
   }
 
-  if (!overlapFounded) {
+  if (!overlapFounded && !inserted) {
     return newInterval[1] < intervals[0][0]
       ? [newInterval, ...intervals]
       : [...intervals, newInterval]
@@ -67,7 +79,5 @@ const overlaps = (a: number[], b: number[]): boolean => {
     (a[0] >= b[0] && a[1] <= b[1] && b[1] >= a[0])
   )
 }
-
-console.log(insert([[1, 5]], [2, 3]))
 
 export default insert
