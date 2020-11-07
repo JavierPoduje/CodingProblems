@@ -7,7 +7,7 @@ Problemas tipo `coding interviews` resueltos con Typescript.
 Copiar el proyecto:
 
 ```sh
-git clone git@github.com:JavierPoduje/coding_problems.git
+git clone https://github.com/JavierPoduje/CodingProblems.git
 ```
 
 Instalar dependencias:
@@ -25,10 +25,18 @@ npm install
   - `solution.ts`: Typescript con la solución del problema.
   - `solution.test.js`: Javascript con los test del problema.
 
-## Para correr los test
+## Tests
 
-Ejecutar el comando:
+Para correr todos los test:
 
 ```sh
 npm run test
+```
+
+Para correr un test específico, agregar el nombre del archivo al final del comando:
+
+Ejemplo:
+
+```sh
+npm run test arrays/merges/meeting-room-ii/solution.test.js
 ```

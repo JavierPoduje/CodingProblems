@@ -2,7 +2,7 @@
  * Returns the max number of simultaneous overlaps of meetings - O(log n)
  *
  * Complexity: O(log n) cause of the initial sorting
- * Space: O(n) used in the merge sort
+ * Space: O(n) - for the merge sort
  *
  * @param {number[][]} meetings
  * @returns {number}
