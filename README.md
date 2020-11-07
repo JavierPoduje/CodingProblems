@@ -1,4 +1,4 @@
-# Ejercicios de Algoritmos en Typescript
+# Problemas tipo entrevista
 
 Problemas tipo `coding interviews` resueltos con Typescript.
 
