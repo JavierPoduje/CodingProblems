@@ -10,7 +10,22 @@
 const roomsNeeded = (meetings: number[][]): number => {
   sortByStart(meetings) // O(log n)
 
-  return -1
+  let maxOverlap = 1
+
+  for (let i = 0; i < meetings.length; i++) {
+    let curr = meetings[i]
+    let j = i + 1
+    let currOverlaps = 0
+
+    while (j < meetings.length && overlaps(curr, meetings[j])) {
+      currOverlaps += 1
+      j++
+    }
+
+    maxOverlap = Math.max(maxOverlap, currOverlaps)
+  }
+
+  return maxOverlap
 }
 
 const sortByStart = (meetings: number[][]): number[][] => {
@@ -28,13 +43,9 @@ const sortByStart = (meetings: number[][]): number[][] => {
 
   // merge left and right size
   while (leftSize.length && rightSize.length) {
-    if (leftSize[0][0] <= rightSize[0][0]) {
-      let shifted = leftSize.shift()
-      if (shifted) sortedMeetings.push(shifted)
-    } else {
-      let shifted = rightSize.shift()
-      if (shifted) sortedMeetings.push(shifted)
-    }
+    let shifted =
+      leftSize[0][0] <= rightSize[0][0] ? leftSize.shift() : rightSize.shift()
+    if (shifted) sortedMeetings.push(shifted)
   }
 
   if (leftSize.length) return [...sortedMeetings, ...leftSize]
@@ -43,12 +54,14 @@ const sortByStart = (meetings: number[][]): number[][] => {
   return sortedMeetings
 }
 
-console.log(
-  sortByStart([
-    [2, 5],
-    [1, 4],
-    [0, 10]
-  ])
-)
+const overlaps = (a: number[], b: number[]): boolean => {
+  return (
+    (a[0] <= b[0] && a[1] < b[1] && a[0] < b[1]) ||
+    (a[0] >= b[0] && a[1] > b[1] && a[0] < b[1]) ||
+    (a[0] < b[0] && a[1] >= b[1] && a[0] < b[1]) ||
+    (a[0] > b[0] && a[1] <= b[1] && a[0] < b[1]) ||
+    (a[0] == b[0] && a[1] == b[1])
+  )
+}
 
 export default roomsNeeded
