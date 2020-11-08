@@ -2,7 +2,6 @@
  * complexity: O(log n) because of the sort
  * space: O(1)
  */
-
 const findMinArrowShots = (points: number[][]): number => {
   if (!points.length) return 0
   if (points.length === 1) return 1
@@ -35,15 +34,6 @@ const findMinArrowShots = (points: number[][]): number => {
 }
 
 const findOverlapedFraction = (a: number[], b: number[]): number[] =>
-  overlap(a, b) ? [Math.max(a[0], b[0]), Math.min(a[1], b[1])] : []
-
-const overlap = (a: number[], b: number[]): boolean => {
-  return (
-    (a[0] <= b[0] && a[1] < b[1] && a[0] <= b[1] && a[1] >= b[0]) ||
-    (a[0] <= b[0] && a[1] > b[1] && a[0] <= b[1] && a[1] >= b[0]) ||
-    (a[0] < b[0] && a[1] >= b[1] && a[0] <= b[1] && a[1] >= b[0]) ||
-    (a[0] == b[0] && a[1] == b[1])
-  )
-}
+  a[1] >= b[0] ? [Math.max(a[0], b[0]), Math.min(a[1], b[1])] : []
 
 export default findMinArrowShots
