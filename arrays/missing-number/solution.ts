@@ -1,24 +1,20 @@
 /*
+Complexity: (n)
+Space: O(1)
 
-brute force:
+incomplete = [0, n].sum()
+complete = [0, 1, 2, 3, 4, 5].sum()
 
-Complexity: (n * log n)
-Spece = O(1)
-
-1. sort O(n log n)
-
-2. iterate over the number and return first missing one, the last + 1 otherwise
-
+complete - incomplete
 */
 
 const missingNumber = (nums: number[]): number => {
-  nums.sort((a,b) => a-b)
+  const reducer = (a: number, b: number) => a + b
 
-  for (let i = 0; i < nums.length - 1; i++) {
-    if (nums[i + 1] - nums[i] !== 1) return nums[i] + 1
-  }
+  const complete = Array.from(Array(nums.length + 1).keys()).reduce(reducer, 0)
+  const incomplete = nums.reduce(reducer, 0)
 
-  return nums[nums.length - 1] + 1
+  return complete - incomplete
 };
 
 export default missingNumber
