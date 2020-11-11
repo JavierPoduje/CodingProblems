@@ -3,22 +3,20 @@
  * the duplicate number.
  *
  * Complexity: O(n)
- * Space: O(1)
+ * Space: O(n)
  *
  * @param {number[]} nums
  * @returns {number}
  */
 
 const findDuplicate = (nums: number[]): number => {
-  let sum = 0
-  let actualSum = 0
-
+  let uniques = new Set()
   for (let i = 0; i < nums.length; i++) {
-    sum += nums[i]
-    if (i < nums.length - 1) actualSum += i + 1
+    if (uniques.has(nums[i])) return nums[i]
+    uniques.add(nums[i])
   }
 
-  return sum - actualSum
+  return nums[0]
 }
 
 export default findDuplicate
